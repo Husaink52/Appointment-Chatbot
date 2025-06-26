@@ -30,7 +30,7 @@ def create_event(summary, start_time):
             'start': {'dateTime': start_time.isoformat(), 'timeZone': 'Asia/Kolkata'},
             'end': {'dateTime': end_time.isoformat(), 'timeZone': 'Asia/Kolkata'},
         }
-        created_event = service.events().insert(calendarId='primary', body=event).execute()
+        created_event = service.events().insert(calendarId='husainkhalapurwala52@gmail.com', body=event).execute()
         print("Event created:", created_event)
         return created_event.get('htmlLink')
     except Exception as e:
