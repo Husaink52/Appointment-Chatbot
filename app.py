@@ -10,7 +10,7 @@ import json
 
 # ------------------ Streamlit Setup ------------------
 st.set_page_config(page_title="TailorTalk Chatbot", page_icon="🤖")
-st.title("👔 TailorTalk Chatbot")
+st.title(" TailorTalk Chatbot")
 st.markdown("Ask questions or book your tailoring appointment!")
 
 # ------------------ Google Calendar Setup ------------------
@@ -23,14 +23,20 @@ credentials = service_account.Credentials.from_service_account_info(
 service = build('calendar', 'v3', credentials=credentials)
 
 def create_event(summary, start_time):
-    end_time = start_time + timedelta(hours=1)
-    event = {
-        'summary': summary,
-        'start': {'dateTime': start_time.isoformat(), 'timeZone': 'Asia/Kolkata'},
-        'end': {'dateTime': end_time.isoformat(), 'timeZone': 'Asia/Kolkata'},
-    }
-    created_event = service.events().insert(calendarId='primary', body=event).execute()
-    return created_event.get('htmlLink')
+    try:
+        end_time = start_time + timedelta(hours=1)
+        event = {
+            'summary': summary,
+            'start': {'dateTime': start_time.isoformat(), 'timeZone': 'Asia/Kolkata'},
+            'end': {'dateTime': end_time.isoformat(), 'timeZone': 'Asia/Kolkata'},
+        }
+        created_event = service.events().insert(calendarId='primary', body=event).execute()
+        print("Event created:", created_event)
+        return created_event.get('htmlLink')
+    except Exception as e:
+        print("Error creating event:", e)
+        return None
+
 
 # ------------------ LLM Setup ------------------
 @st.cache_resource
